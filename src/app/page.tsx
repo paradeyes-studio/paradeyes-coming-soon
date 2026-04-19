@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import CinematicIntro from "@/components/CinematicIntro";
 import CustomCursor from "@/components/CustomCursor";
 import EyeExperience from "@/components/EyeExperience";
 import GradientBackground from "@/components/GradientBackground";
@@ -22,6 +23,7 @@ export default function Home() {
       <SmoothScroll />
       <CustomCursor />
       <GradientBackground />
+      <CinematicIntro />
 
       <div className="relative z-10 flex h-[100dvh] flex-col safe-top safe-bottom safe-x">
         <motion.div

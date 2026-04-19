@@ -28,10 +28,12 @@ export default function EyeExperience() {
   const prefersReducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   const [webgl, setWebgl] = useState(false);
+  const [lowPower, setLowPower] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     setWebgl(supportsWebGL());
+    setLowPower(window.innerWidth < 768);
   }, []);
 
   const use3D = mounted && !prefersReducedMotion && webgl;
@@ -47,12 +49,12 @@ export default function EyeExperience() {
         className="pointer-events-none absolute inset-0 rounded-full"
         style={{
           background:
-            "radial-gradient(circle at 50% 50%, rgba(87,238,161,0.18) 0%, rgba(87,238,161,0.06) 45%, transparent 70%)",
-          filter: "blur(16px)",
+            "radial-gradient(circle at 50% 50%, rgba(87,238,161,0.22) 0%, rgba(87,238,161,0.08) 45%, transparent 70%)",
+          filter: "blur(20px)",
         }}
       />
       {use3D ? (
-        <Eye3D />
+        <Eye3D lowPower={lowPower} />
       ) : (
         <div className="flex items-center justify-center">
           <ParadeyesEye />
