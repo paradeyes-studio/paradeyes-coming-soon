@@ -1,40 +1,38 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { DM_Sans, Instrument_Serif } from "next/font/google";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  display: "swap",
+});
+
 const instrumentSerif = Instrument_Serif({
-  variable: "--font-serif",
+  variable: "--font-instrument-serif",
   subsets: ["latin"],
   weight: ["400"],
+  style: ["normal", "italic"],
   display: "swap",
 });
-
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-const SITE_URL = "https://paradeyesagency.com";
-const SITE_DESCRIPTION =
-  "Agence créative au service de votre croissance. Une nouvelle agence arrive. Parlons de votre projet : hello@paradeyesagency.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Paradeyes Agency",
+  title: SITE_NAME,
   description: SITE_DESCRIPTION,
   openGraph: {
-    title: "Paradeyes Agency",
+    title: SITE_NAME,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     type: "website",
     locale: "fr_FR",
-    siteName: "Paradeyes Agency",
+    siteName: SITE_NAME,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Paradeyes Agency",
+    title: SITE_NAME,
     description: SITE_DESCRIPTION,
   },
 };
@@ -53,11 +51,15 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${instrumentSerif.variable} ${inter.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-darkgreen text-white">
-        {children}
-      </body>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap"
+        />
+      </head>
+      <body className="min-h-full bg-[#023236] text-white">{children}</body>
     </html>
   );
 }
