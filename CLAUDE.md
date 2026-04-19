@@ -78,8 +78,10 @@ src/
 ├── components/
 │   ├── ParadeyesLogo.tsx       # Logo complet (inline SVG, avec typo)
 │   ├── ParadeyesEye.tsx        # Logo œil seul animé
-│   └── GradientBackground.tsx  # Gradient radial signature
-└── constants.ts                # Constantes (email, URLs sociales, etc.)
+│   ├── GradientBackground.tsx  # Gradient signature animé avec parallaxe souris
+│   └── SocialIcons.tsx         # LinkedIn + Instagram
+└── lib/
+    └── constants.ts            # Constantes (email, URLs sociales, etc.)
 ```
 
 ## Meta SEO
