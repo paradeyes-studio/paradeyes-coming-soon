@@ -1,15 +1,13 @@
-// Wording officiel Paradeyes - Validé par Basilide le 19 avril 2026
+// Wording officiel Paradeyes v3 - Validé par Basilide le 20 avril 2026
 
 export const SITE_NAME = "Paradeyes Agency";
 
 export const SIGNATURE = "Agence créative au service de votre croissance.";
-export const SIGNATURE_METHOD = "On comprend. On conçoit. On construit.";
 
-export const TITLE_LINE_1 = "Faire grandir votre business.";
-export const TITLE_LINE_2 = "C'est notre métier.";
+export const TITLE_TEXT = "On comprend. On conçoit. On construit.";
 
 export const NARRATIVE =
-  "Paradeyes orchestre stratégie, identité, design et développement avec une équipe senior issue des plus grandes marques. On comprend votre enjeu, on conçoit la réponse, on construit avec vous. Ouverture juin 2026.";
+  "Une agence qui comprend votre business avant de proposer. Communication stratégique, design, vidéo, site web. Construits sur-mesure, pensés pour convertir.";
 
 export const CTA_LABEL = "Parlons de votre projet";
 export const CTA_HREF =
@@ -21,7 +19,7 @@ export const INSTAGRAM_URL = "https://www.instagram.com/paradeyesagency";
 
 export const SITE_URL = "https://paradeyesagency.com";
 export const SITE_DESCRIPTION =
-  "Paradeyes est une agence créative au service de votre croissance. Stratégie, identité, design et développement pour les marques qui veulent scaler. Ouverture juin 2026.";
+  "Paradeyes est une agence créative au service de votre croissance. Communication stratégique, design, vidéo et site web pour les marques qui veulent scaler.";
 
 export const COLORS = {
   darkGreen: "#023236",
