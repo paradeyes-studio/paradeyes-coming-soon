@@ -54,6 +54,7 @@ export default function RootLayout({
     <html
       lang="fr"
       className={`${dmSans.variable} ${instrumentSerif.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <link
@@ -61,7 +62,12 @@ export default function RootLayout({
           href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap"
         />
       </head>
-      <body className="min-h-full bg-[#023236] text-white">{children}</body>
+      <body
+        className="min-h-full bg-[#023236] text-white"
+        suppressHydrationWarning
+      >
+        {children}
+      </body>
     </html>
   );
 }
