@@ -3,13 +3,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Environment, Points, PointMaterial } from "@react-three/drei";
-import {
-  EffectComposer,
-  Bloom,
-  ChromaticAberration,
-  Vignette,
-  Noise,
-} from "@react-three/postprocessing";
+import { EffectComposer, Noise } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
@@ -25,64 +19,75 @@ function FloatingParticles({ count }: { count: number }) {
 
   useFrame((_, delta) => {
     if (!ref.current) return;
-    ref.current.rotation.x -= delta / 22;
-    ref.current.rotation.y -= delta / 28;
+    ref.current.rotation.x -= delta / 24;
+    ref.current.rotation.y -= delta / 30;
   });
 
   return (
-    <Points
-      ref={ref}
-      positions={positions}
-      stride={3}
-      frustumCulled={false}
-    >
+    <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
         color="#57EEA1"
-        size={0.02}
+        size={0.015}
         sizeAttenuation
         depthWrite={false}
-        opacity={0.55}
+        opacity={0.5}
       />
     </Points>
   );
 }
 
-function EyeModel({ lowPower = false }: { lowPower?: boolean }) {
-  const outerRef = useRef<THREE.Group>(null);
-  const breathRef = useRef<THREE.Group>(null);
-  const entryRef = useRef<THREE.Group>(null);
-  const blinkRef = useRef<THREE.Group>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const targetRot = useRef({ x: 0, y: 0 });
-  const velocity = useRef({ x: 0, y: 0 });
-  const blinkTargetRef = useRef(1);
+function easeOutBack(x: number): number {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+}
+
+function clamp01(x: number): number {
+  return Math.max(0, Math.min(1, x));
+}
+
+function EyeModel() {
+  const groupRef = useRef<THREE.Group>(null);
+  const bodyOpacityRefs = useRef<THREE.MeshPhysicalMaterial[]>([]);
+  const wireOpacityRefs = useRef<THREE.LineBasicMaterial[]>([]);
+  const starGroupRef = useRef<THREE.Group>(null);
+  const starMaterialsRef = useRef<THREE.MeshStandardMaterial[]>([]);
+  const mousePos = useRef({ x: 0, y: 0 });
   const isFineRef = useRef(false);
   const [startTime] = useState(() => performance.now() / 1000);
 
   const data = useLoader(SVGLoader, "/logos/paradeyes-eye.svg");
 
-  const { geometries, offset, scale } = useMemo(() => {
-    const geos: THREE.BufferGeometry[] = [];
-    data.paths.forEach((path) => {
+  const { bodyGeometries, starGeometries, offset, scale } = useMemo(() => {
+    const body: THREE.BufferGeometry[] = [];
+    const star: THREE.BufferGeometry[] = [];
+
+    data.paths.forEach((path, idx) => {
       const shapes = path.toShapes(true);
       shapes.forEach((shape) => {
         const geo = new THREE.ExtrudeGeometry(shape, {
-          depth: 40,
+          depth: 18,
           bevelEnabled: true,
-          bevelThickness: 8,
-          bevelSize: 5,
-          bevelSegments: 10,
+          bevelThickness: 3,
+          bevelSize: 2,
+          bevelSegments: 8,
           curveSegments: 56,
         });
         geo.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1));
         geo.computeVertexNormals();
-        geos.push(geo);
+        // paths[2] is the central star (4 branches)
+        if (idx === 2) {
+          star.push(geo);
+        } else {
+          body.push(geo);
+        }
       });
     });
 
+    const all = [...body, ...star];
     const box = new THREE.Box3();
-    geos.forEach((g) => {
+    all.forEach((g) => {
       g.computeBoundingBox();
       if (g.boundingBox) box.union(g.boundingBox);
     });
@@ -94,7 +99,12 @@ function EyeModel({ lowPower = false }: { lowPower?: boolean }) {
     const targetSize = 2.6;
     const s = targetSize / maxDim;
 
-    return { geometries: geos, offset: c, scale: s };
+    return {
+      bodyGeometries: body,
+      starGeometries: star,
+      offset: c,
+      scale: s,
+    };
   }, [data]);
 
   useEffect(() => {
@@ -103,113 +113,151 @@ function EyeModel({ lowPower = false }: { lowPower?: boolean }) {
     ).matches;
     if (!isFineRef.current) return;
     const onMove = (e: MouseEvent) => {
-      mouseRef.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseRef.current.y = (e.clientY / window.innerHeight - 0.5) * 2;
+      mousePos.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      mousePos.current.y = (e.clientY / window.innerHeight - 0.5) * 2;
     };
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  useEffect(() => {
-    let closeTimeout: number | undefined;
-    let openTimeout: number | undefined;
-    let nextTimeout: number | undefined;
-    const schedule = () => {
-      const delay = 8000 + Math.random() * 4000;
-      nextTimeout = window.setTimeout(() => {
-        blinkTargetRef.current = 0.08;
-        closeTimeout = window.setTimeout(() => {
-          blinkTargetRef.current = 1;
-          openTimeout = window.setTimeout(schedule, 400);
-        }, 160);
-      }, delay);
-    };
-    schedule();
-    return () => {
-      if (closeTimeout) window.clearTimeout(closeTimeout);
-      if (openTimeout) window.clearTimeout(openTimeout);
-      if (nextTimeout) window.clearTimeout(nextTimeout);
-    };
-  }, []);
-
-  useFrame((state, delta) => {
-    if (
-      !outerRef.current ||
-      !breathRef.current ||
-      !entryRef.current ||
-      !blinkRef.current
-    )
-      return;
-    const now = state.clock.elapsedTime;
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
     const elapsed = performance.now() / 1000 - startTime;
 
+    // Rotation auto fluide + tilt souris additif (pas de spring lourd)
+    groupRef.current.rotation.y += delta * 0.5;
+    groupRef.current.rotation.x += delta * 0.15;
+
     if (isFineRef.current) {
-      targetRot.current.x = mouseRef.current.y * 0.22;
-      targetRot.current.y = mouseRef.current.x * 0.38;
-      const stiffness = 0.05;
-      const damping = 0.85;
-      const dx = targetRot.current.x - outerRef.current.rotation.x;
-      const dy = targetRot.current.y - outerRef.current.rotation.y;
-      velocity.current.x = velocity.current.x * damping + dx * stiffness;
-      velocity.current.y = velocity.current.y * damping + dy * stiffness;
-      outerRef.current.rotation.x += velocity.current.x;
-      outerRef.current.rotation.y += velocity.current.y;
-    } else {
-      outerRef.current.rotation.y += delta * 0.08;
+      const targetTiltX = mousePos.current.y * 0.2;
+      const targetTiltY = mousePos.current.x * 0.2;
+      groupRef.current.rotation.x +=
+        (targetTiltX - groupRef.current.rotation.x * 0.1) * delta * 2;
+      groupRef.current.rotation.y +=
+        (targetTiltY - groupRef.current.rotation.y * 0.1) * delta * 2;
     }
 
-    const breath = 1 + Math.sin((now * Math.PI * 2) / 6) * 0.018;
-    breathRef.current.scale.setScalar(breath);
+    // Entrance orchestration
+    // T=0.6 → 2.2 : wireframe stroke visible
+    // T=1.2 → 2.2 : iridescent body fading in
+    // T=2.2 → 2.8 : star pop with overshoot + 180deg rotation
+    const wireStart = 0.6;
+    const wireEnd = 2.2;
+    const bodyStart = 1.2;
+    const bodyEnd = 2.2;
+    const starStart = 2.2;
+    const starEnd = 2.8;
 
-    const currentY = blinkRef.current.scale.y;
-    blinkRef.current.scale.y =
-      currentY + (blinkTargetRef.current - currentY) * 0.28;
+    // Wireframe opacity: fade in 0.6→1.0, hold, fade out 1.8→2.2
+    let wireOpacity = 0;
+    if (elapsed >= wireStart && elapsed < wireEnd) {
+      if (elapsed < wireStart + 0.4) {
+        wireOpacity = (elapsed - wireStart) / 0.4;
+      } else if (elapsed > wireEnd - 0.4) {
+        wireOpacity = (wireEnd - elapsed) / 0.4;
+      } else {
+        wireOpacity = 1;
+      }
+    }
+    wireOpacityRefs.current.forEach((m) => {
+      if (m) m.opacity = clamp01(wireOpacity);
+    });
 
-    const entryDelay = 1.6;
-    const entryDuration = 1.4;
-    const p = Math.max(
-      0,
-      Math.min(1, (elapsed - entryDelay) / entryDuration),
-    );
-    const eased = 1 - Math.pow(1 - p, 3);
-    entryRef.current.scale.setScalar(eased);
+    // Body iridescent opacity: fade in 1.2→2.2
+    let bodyOpacity = 0;
+    if (elapsed >= bodyStart) {
+      bodyOpacity = clamp01((elapsed - bodyStart) / (bodyEnd - bodyStart));
+    }
+    bodyOpacityRefs.current.forEach((m) => {
+      if (m) m.opacity = bodyOpacity;
+    });
+
+    // Star pop: scale 0→1 with back.out + rotation z from PI to 0
+    if (starGroupRef.current) {
+      let starScale = 0;
+      let starRotZ = Math.PI;
+      if (elapsed >= starStart) {
+        const t = clamp01((elapsed - starStart) / (starEnd - starStart));
+        starScale = easeOutBack(t);
+        starRotZ = Math.PI * (1 - t);
+      }
+      starGroupRef.current.scale.setScalar(starScale);
+      starGroupRef.current.rotation.z = starRotZ;
+
+      // Star emissive intensity ramps up with scale, sustained afterwards
+      const emissive = Math.min(0.8, Math.max(0, (elapsed - starStart) * 1.6));
+      starMaterialsRef.current.forEach((m) => {
+        if (m) m.emissiveIntensity = emissive;
+      });
+    }
   });
 
   return (
-    <group ref={outerRef}>
-      <group ref={entryRef} scale={0}>
-        <group ref={breathRef}>
-          <group ref={blinkRef}>
-            <group
-              scale={scale}
-              position={[
-                -offset.x * scale,
-                -offset.y * scale,
-                -offset.z * scale,
-              ]}
-            >
-              {geometries.map((g, i) => (
-                <mesh key={i} geometry={g} castShadow receiveShadow>
-                  <meshPhysicalMaterial
-                    color={new THREE.Color("#3FD98A")}
-                    metalness={lowPower ? 0.55 : 0.85}
-                    roughness={lowPower ? 0.35 : 0.15}
-                    iridescence={lowPower ? 0.45 : 0.65}
-                    iridescenceIOR={1.3}
-                    iridescenceThicknessRange={[100, 400]}
-                    clearcoat={lowPower ? 0.6 : 1.0}
-                    clearcoatRoughness={lowPower ? 0.2 : 0.05}
-                    reflectivity={lowPower ? 0.6 : 0.9}
-                    envMapIntensity={lowPower ? 0.8 : 1.2}
-                    sheen={0.3}
-                    sheenColor={new THREE.Color("#57EEA1")}
-                    sheenRoughness={0.5}
-                    transmission={0}
-                  />
-                </mesh>
-              ))}
-            </group>
+    <group ref={groupRef}>
+      <group
+        scale={scale}
+        position={[-offset.x * scale, -offset.y * scale, -offset.z * scale]}
+      >
+        {/* Body: hook + wave */}
+        {bodyGeometries.map((g, i) => (
+          <group key={`body-${i}`}>
+            {/* Wireframe stroke overlay (electric green edges) */}
+            <lineSegments>
+              <wireframeGeometry args={[g]} />
+              <lineBasicMaterial
+                ref={(m) => {
+                  if (m) wireOpacityRefs.current[i] = m;
+                }}
+                color="#57EEA1"
+                transparent
+                opacity={0}
+                depthWrite={false}
+                toneMapped={false}
+              />
+            </lineSegments>
+            {/* Iridescent solid mesh */}
+            <mesh geometry={g}>
+              <meshPhysicalMaterial
+                ref={(m) => {
+                  if (m) bodyOpacityRefs.current[i] = m;
+                }}
+                color={new THREE.Color("#3FD98A")}
+                metalness={0.6}
+                roughness={0.25}
+                iridescence={0.4}
+                iridescenceIOR={1.3}
+                iridescenceThicknessRange={[100, 400]}
+                clearcoat={0.5}
+                clearcoatRoughness={0.3}
+                reflectivity={0.5}
+                envMapIntensity={0.3}
+                sheen={0.2}
+                sheenColor={new THREE.Color("#57EEA1")}
+                sheenRoughness={0.6}
+                transparent
+                opacity={0}
+              />
+            </mesh>
           </group>
+        ))}
+
+        {/* Star: central 4-branch shape, separate group for pop animation */}
+        <group ref={starGroupRef} scale={0}>
+          {starGeometries.map((g, i) => (
+            <mesh key={`star-${i}`} geometry={g}>
+              <meshStandardMaterial
+                ref={(m) => {
+                  if (m) starMaterialsRef.current[i] = m;
+                }}
+                color="#57EEA1"
+                emissive="#57EEA1"
+                emissiveIntensity={0}
+                toneMapped={false}
+                metalness={0.3}
+                roughness={0.4}
+              />
+            </mesh>
+          ))}
         </group>
       </group>
     </group>
@@ -221,9 +269,7 @@ type Eye3DProps = {
 };
 
 export default function Eye3D({ lowPower = false }: Eye3DProps) {
-  const particleCount = lowPower ? 140 : 520;
-  const envIntensity = lowPower ? 0.55 : 0.8;
-  const keyIntensity = lowPower ? 2.0 : 3.2;
+  const particleCount = lowPower ? 180 : 400;
 
   return (
     <Canvas
@@ -236,30 +282,21 @@ export default function Eye3D({ lowPower = false }: Eye3DProps) {
       dpr={[1, 2]}
       style={{ background: "transparent" }}
     >
-      <ambientLight color="#023236" intensity={0.2} />
+      <ambientLight color="#023236" intensity={0.3} />
 
       <spotLight
-        position={[5, 5, 5]}
-        angle={0.4}
-        penumbra={0.8}
-        intensity={keyIntensity}
-        decay={0}
-        color="#FFFFFF"
-        castShadow
-      />
-      <spotLight
-        position={[-3, -2, 4]}
-        angle={0.6}
+        position={[4, 5, 5]}
+        angle={0.5}
         penumbra={1}
-        intensity={2.0}
+        intensity={1.2}
         decay={0}
         color="#57EEA1"
       />
       <spotLight
-        position={[0, 3, -5]}
-        angle={0.5}
+        position={[-3, -2, 3]}
+        angle={0.6}
         penumbra={1}
-        intensity={1.8}
+        intensity={0.8}
         decay={0}
         color="#57EEA1"
       />
@@ -268,36 +305,20 @@ export default function Eye3D({ lowPower = false }: Eye3DProps) {
         <Environment
           preset="studio"
           background={false}
-          environmentIntensity={envIntensity}
+          environmentIntensity={0.2}
           environmentRotation={[0, Math.PI / 4, 0]}
         />
-        <EyeModel lowPower={lowPower} />
+        <EyeModel />
         <FloatingParticles count={particleCount} />
       </Suspense>
 
-      {!lowPower && (
-        <EffectComposer>
-          <Bloom
-            intensity={0.7}
-            luminanceThreshold={0.35}
-            luminanceSmoothing={0.9}
-            mipmapBlur
-            radius={0.75}
-          />
-          <ChromaticAberration
-            blendFunction={BlendFunction.NORMAL}
-            offset={[0.0008, 0.0008]}
-            radialModulation={false}
-            modulationOffset={0}
-          />
-          <Vignette offset={0.3} darkness={0.55} eskil={false} />
-          <Noise
-            premultiply
-            blendFunction={BlendFunction.ADD}
-            opacity={0.035}
-          />
-        </EffectComposer>
-      )}
+      <EffectComposer>
+        <Noise
+          premultiply
+          blendFunction={BlendFunction.MULTIPLY}
+          opacity={0.025}
+        />
+      </EffectComposer>
     </Canvas>
   );
 }

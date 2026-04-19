@@ -42,15 +42,15 @@ export default function EyeExperience() {
     <div
       role="img"
       aria-label="Œil Paradeyes iridescent, symbole de l'agence"
-      className="relative flex items-center justify-center w-[280px] h-[280px] md:w-[400px] md:h-[400px] lg:w-[480px] lg:h-[480px]"
+      className="relative flex items-center justify-center w-full h-full"
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 rounded-full"
         style={{
           background:
-            "radial-gradient(circle at 50% 50%, rgba(87,238,161,0.22) 0%, rgba(87,238,161,0.08) 45%, transparent 70%)",
-          filter: "blur(20px)",
+            "radial-gradient(circle at 50% 50%, rgba(87,238,161,0.18) 0%, rgba(87,238,161,0.06) 45%, transparent 70%)",
+          filter: "blur(24px)",
         }}
       />
       {use3D ? (

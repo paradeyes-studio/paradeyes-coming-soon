@@ -20,10 +20,10 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: SITE_NAME,
+  title: "Paradeyes Agency — Agence créative au service de votre croissance",
   description: SITE_DESCRIPTION,
   openGraph: {
-    title: SITE_NAME,
+    title: "Paradeyes Agency",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     type: "website",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_NAME,
+    title: "Paradeyes Agency",
     description: SITE_DESCRIPTION,
   },
 };
