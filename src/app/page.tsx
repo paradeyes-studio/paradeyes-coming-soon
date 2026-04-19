@@ -14,14 +14,17 @@ export default function Home() {
     <main className="relative min-h-screen overflow-hidden">
       <GradientBackground />
 
-      <div className="relative z-10 min-h-screen flex flex-col">
+      <div className="relative z-10 min-h-screen flex flex-col safe-top safe-bottom">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8, ease: premium }}
-          className="absolute top-6 left-6 md:top-12 md:left-12"
+          className="absolute top-5 left-5 md:top-8 md:left-8 lg:top-12 lg:left-12"
         >
-          <ParadeyesLogo size="small" />
+          <ParadeyesLogo
+            size="small"
+            className="w-[140px] md:w-[180px] lg:w-[220px]"
+          />
         </motion.div>
 
         <div className="flex-1 flex flex-col items-center justify-center px-6 pt-32 pb-28 md:pt-40 md:pb-32">
@@ -37,7 +40,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2.0, duration: 0.8, ease: premium }}
-            className="mt-12 md:mt-16 text-center text-white text-[22px] md:text-[28px] font-light tracking-[0.01em]"
+            className="mt-8 md:mt-12 lg:mt-16 text-center text-white text-[20px] md:text-[28px] lg:text-[32px] font-bold tracking-[0.01em]"
           >
             {SITE_TAGLINE}
           </motion.h1>
@@ -47,7 +50,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2.4, duration: 0.8, ease: premium }}
-            className="mt-12 md:mt-16 text-white/80 text-[15px] md:text-[16px] tracking-[0.01em] group focus-visible:outline-none"
+            className="mt-10 md:mt-12 lg:mt-16 py-2 text-white/80 text-[14px] md:text-[15px] lg:text-[16px] tracking-[0.01em] group focus-visible:outline-none"
           >
             <span className="relative inline-block">
               {EMAIL}
@@ -63,7 +66,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.8, duration: 0.8, ease: premium }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 md:bottom-8 lg:bottom-12 left-1/2 -translate-x-1/2"
         >
           <SocialIcons />
         </motion.div>

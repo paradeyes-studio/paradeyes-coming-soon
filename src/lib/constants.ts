@@ -1,7 +1,7 @@
 export const SITE_NAME = "Paradeyes Agency";
 export const SITE_TAGLINE = "Paradeyes arrive bientôt.";
 export const EMAIL = "hello@paradeyesagency.com";
-export const LINKEDIN_URL = "https://www.linkedin.com/company/paradeyes-agency";
+export const LINKEDIN_URL = "https://www.linkedin.com/company/paradeyesagency/";
 export const INSTAGRAM_URL = "https://www.instagram.com/paradeyesagency";
 export const SITE_URL = "https://paradeyesagency.com";
 export const SITE_DESCRIPTION =

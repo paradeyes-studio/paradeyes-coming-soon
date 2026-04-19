@@ -28,7 +28,7 @@ export default function ParadeyesEye({ className }: ParadeyesEyeProps) {
         height={219}
         priority
         aria-hidden="true"
-        className="w-[240px] h-auto md:w-[320px] lg:w-[380px]"
+        className="w-[220px] h-auto md:w-[320px] lg:w-[380px]"
       />
     </motion.div>
   );

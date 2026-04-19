@@ -8,12 +8,13 @@ export default function GradientBackground() {
 
   useEffect(() => {
     let rafId = 0;
+    const desktopQuery = window.matchMedia("(min-width: 768px)");
 
     const handleMouseMove = (event: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
       const relX = event.clientX / innerWidth;
       const relY = event.clientY / innerHeight;
-      const amplitude = 0.1;
+      const amplitude = desktopQuery.matches ? 0.1 : 0.05;
       targetRef.current = {
         x: 50 + (relX - 0.5) * amplitude * 100,
         y: 100 + (relY - 0.5) * amplitude * 100,

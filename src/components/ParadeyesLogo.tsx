@@ -8,9 +8,9 @@ type ParadeyesLogoProps = {
 };
 
 const SIZE_MAP: Record<Size, number> = {
-  small: 120,
-  medium: 160,
-  large: 200,
+  small: 180,
+  medium: 220,
+  large: 280,
 };
 
 export default function ParadeyesLogo({
@@ -27,7 +27,7 @@ export default function ParadeyesLogo({
       width={width}
       height={height}
       priority
-      className={className}
+      className={`h-auto ${className ?? ""}`.trim()}
     />
   );
 }

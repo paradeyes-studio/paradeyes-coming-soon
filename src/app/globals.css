@@ -23,6 +23,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 1.25rem);
+}
+
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 1.5rem);
+}
+
+.safe-x {
+  padding-left: max(env(safe-area-inset-left), 1.25rem);
+  padding-right: max(env(safe-area-inset-right), 1.25rem);
+}
+
 @keyframes breathing {
   0%,
   100% {
@@ -41,7 +54,15 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   .gradient-breathing {
-    animation: none;
+    animation: none !important;
   }
 }
