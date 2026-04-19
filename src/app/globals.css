@@ -37,6 +37,13 @@ body {
   padding-right: max(env(safe-area-inset-right), 0px);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .cursor-none-mode,
+  .cursor-none-mode * {
+    cursor: none !important;
+  }
+}
+
 @keyframes breathing {
   0%,
   100% {

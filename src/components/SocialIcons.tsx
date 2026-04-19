@@ -5,7 +5,7 @@ type SocialIconsProps = {
 };
 
 const linkClasses =
-  "inline-flex items-center justify-center p-2 -m-2 text-white/50 hover:text-[#57EEA1] focus-visible:text-[#57EEA1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#57EEA1]/60 rounded-sm transition-colors duration-300";
+  "inline-flex items-center justify-center p-2 -m-2 text-white/55 hover:text-[#57EEA1] focus-visible:text-[#57EEA1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#57EEA1]/60 rounded-sm transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:-translate-y-[1px] hover:drop-shadow-[0_0_12px_rgba(87,238,161,0.45)]";
 
 const iconClasses = "w-[22px] h-[22px] md:w-5 md:h-5";
 
@@ -18,6 +18,7 @@ export default function SocialIcons({ className }: SocialIconsProps) {
         rel="noopener noreferrer"
         aria-label="Paradeyes sur LinkedIn"
         className={linkClasses}
+        data-cursor="expand"
       >
         <svg
           viewBox="0 0 24 24"
@@ -35,6 +36,7 @@ export default function SocialIcons({ className }: SocialIconsProps) {
         rel="noopener noreferrer"
         aria-label="Paradeyes sur Instagram"
         className={linkClasses}
+        data-cursor="expand"
       >
         <svg
           viewBox="0 0 24 24"
