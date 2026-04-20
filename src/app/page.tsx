@@ -6,6 +6,7 @@ import GradientBackground from "@/components/GradientBackground";
 import ParadeyesLogo from "@/components/ParadeyesLogo";
 import PrimaryCTA from "@/components/PrimaryCTA";
 import SocialIcons from "@/components/SocialIcons";
+import WhiteFlare from "@/components/WhiteFlare";
 import WhiteSparkles from "@/components/WhiteSparkles";
 import {
   CTA_HREF,
@@ -26,6 +27,7 @@ export default function Home() {
     <main className="relative h-[100dvh] min-h-[100dvh] overflow-hidden">
       <GradientBackground />
       <WhiteSparkles />
+      <WhiteFlare />
 
       <div className="relative z-10 h-[100dvh] safe-top safe-bottom safe-x">
         {/* Logo top-left */}
@@ -43,39 +45,72 @@ export default function Home() {
 
         {/* Zone centrale */}
         <div className="flex h-full flex-col items-center justify-center px-6 pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28">
-          {/* Œil 3D avec fade in smooth + brume + scale subtil */}
-          <motion.div
-            initial={
-              reduced
-                ? { opacity: 0 }
-                : { opacity: 0, scale: 0.95, filter: "blur(40px)" }
-            }
-            animate={
-              reduced
-                ? { opacity: 1 }
-                : { opacity: 1, scale: 1, filter: "blur(0px)" }
-            }
-            transition={{
-              duration: reduced ? 0.6 : 2.5,
-              ease: premium,
-              filter: { duration: 2.2 },
-            }}
-            className="w-[220px] h-[220px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] flex-shrink-0"
-          >
-            <EyeExperience />
-          </motion.div>
+          {/* Conteneur œil + burst lumineux d'entrée */}
+          <div className="relative w-[220px] h-[220px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] flex-shrink-0">
+            {/* Aura lumineuse qui précède et enrobe l'œil */}
+            {!reduced && (
+              <motion.div
+                aria-hidden="true"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{
+                  opacity: [0, 1, 1, 0],
+                  scale: [0, 1.5, 2, 3],
+                }}
+                transition={{
+                  duration: 2.5,
+                  ease: premium,
+                  times: [0, 0.2, 0.6, 1],
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                style={{
+                  width: "400px",
+                  height: "400px",
+                  background:
+                    "radial-gradient(circle, rgba(87, 238, 161, 0.4) 0%, rgba(87, 238, 161, 0.2) 30%, rgba(87, 238, 161, 0.05) 60%, transparent 100%)",
+                  filter: "blur(20px)",
+                  zIndex: 15,
+                }}
+              />
+            )}
 
-          {/* Signature (DM Sans Medium uppercase electric green) */}
+            {/* Œil 3D matérialisation après le burst */}
+            <motion.div
+              initial={
+                reduced
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.9, filter: "blur(30px)" }
+              }
+              animate={
+                reduced
+                  ? { opacity: 1 }
+                  : { opacity: 1, scale: 1, filter: "blur(0px)" }
+              }
+              transition={{
+                delay: reduced ? 0 : 0.8,
+                duration: reduced ? 0.6 : 2.0,
+                ease: premium,
+                filter: { duration: 1.8 },
+              }}
+              className="relative w-full h-full z-20"
+            >
+              <EyeExperience />
+            </motion.div>
+          </div>
+
+          {/* Signature (DM Sans SemiBold uppercase electric green) */}
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 2.8,
+              delay: reduced ? 0 : 3.0,
               duration: 0.8,
               ease: premium,
             }}
-            style={dmSansStyle}
-            className="mt-4 md:mt-5 lg:mt-6 text-center font-medium uppercase text-[#57EEA1] text-[11px] md:text-[13px] lg:text-[14px] tracking-[0.18em] leading-[1.4]"
+            style={{
+              ...dmSansStyle,
+              textShadow: "0 0 20px rgba(87, 238, 161, 0.3)",
+            }}
+            className="mt-4 md:mt-5 lg:mt-6 text-center font-semibold uppercase text-[#57EEA1] text-[13px] md:text-[14px] lg:text-[15px] tracking-[0.18em] leading-[1.4]"
           >
             {SIGNATURE}
           </motion.p>
@@ -85,11 +120,11 @@ export default function Home() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 3.1,
+              delay: reduced ? 0 : 3.3,
               duration: 0.9,
               ease: premium,
             }}
-            className="mt-3 md:mt-4 lg:mt-5 text-center font-sans font-bold text-white text-[22px] md:text-[36px] lg:text-[44px] xl:text-[56px] 2xl:text-[64px] tracking-[-0.02em] leading-[1.1] md:whitespace-nowrap"
+            className="mt-3 md:mt-4 lg:mt-5 text-center font-sans font-bold text-white text-[22px] md:text-[30px] lg:text-[38px] xl:text-[46px] 2xl:text-[52px] tracking-[-0.02em] leading-[1.15]"
           >
             {TITLE_TEXT}
           </motion.h1>
@@ -99,7 +134,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 3.5,
+              delay: reduced ? 0 : 3.7,
               duration: 0.9,
               ease: premium,
             }}
@@ -113,7 +148,7 @@ export default function Home() {
           <PrimaryCTA
             href={CTA_HREF}
             label={CTA_LABEL}
-            delay={reduced ? 0 : 3.9}
+            delay={reduced ? 0 : 4.1}
             className="mt-5 md:mt-7 lg:mt-8"
           />
         </div>
@@ -123,7 +158,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: reduced ? 0 : 4.3,
+            delay: reduced ? 0 : 4.5,
             duration: 0.8,
             ease: premium,
           }}

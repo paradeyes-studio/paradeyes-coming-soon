@@ -4,7 +4,8 @@ export const SITE_NAME = "Paradeyes Agency";
 
 export const SIGNATURE = "Agence créative au service de votre croissance.";
 
-export const TITLE_TEXT = "On comprend. On conçoit. On construit.";
+export const TITLE_TEXT =
+  "On\u00A0comprend. On\u00A0conçoit. On\u00A0construit.";
 
 export const NARRATIVE =
   "Une agence qui comprend votre business avant de proposer. Communication stratégique, design, vidéo, site web. Construits sur-mesure, pensés pour convertir.";

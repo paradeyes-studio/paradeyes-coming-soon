@@ -28,10 +28,10 @@ function FloatingParticles({ count }: { count: number }) {
       <PointMaterial
         transparent
         color="#57EEA1"
-        size={0.012}
+        size={0.013}
         sizeAttenuation
         depthWrite={false}
-        opacity={0.4}
+        opacity={0.45}
       />
     </Points>
   );
@@ -39,6 +39,8 @@ function FloatingParticles({ count }: { count: number }) {
 
 function EyeModel() {
   const groupRef = useRef<THREE.Group>(null);
+  const randomOffsetRef = useRef({ x: 0, y: 0 });
+  const lastRandomUpdateRef = useRef(0);
 
   const data = useLoader(SVGLoader, "/logos/paradeyes-eye.svg");
 
@@ -79,14 +81,35 @@ function EyeModel() {
 
   useFrame((state) => {
     if (!groupRef.current) return;
-    // Oscillation sinusoïdale douce sur Y uniquement
-    // Amplitude : ±45° (π/4), période : 12 secondes
-    const time = state.clock.getElapsedTime();
-    const amplitude = Math.PI / 4;
-    const frequency = (Math.PI * 2) / 12;
 
-    groupRef.current.rotation.y = Math.sin(time * frequency) * amplitude;
-    groupRef.current.rotation.x = 0;
+    const time = state.clock.getElapsedTime();
+
+    // Oscillation principale Y (±45°, cycle 12s)
+    const amplitudeY = Math.PI / 4;
+    const frequencyY = (Math.PI * 2) / 12;
+    const baseRotationY = Math.sin(time * frequencyY) * amplitudeY;
+
+    // Oscillation secondaire X (±8°, cycle 18s, déphasage π/3)
+    const amplitudeX = (Math.PI / 180) * 8;
+    const frequencyX = (Math.PI * 2) / 18;
+    const baseRotationX =
+      Math.sin(time * frequencyX + Math.PI / 3) * amplitudeX;
+
+    // Variations aléatoires toutes les 3s, lissées par lerp
+    if (time - lastRandomUpdateRef.current > 3) {
+      randomOffsetRef.current = {
+        x: (Math.random() - 0.5) * 0.1,
+        y: (Math.random() - 0.5) * 0.15,
+      };
+      lastRandomUpdateRef.current = time;
+    }
+
+    const targetX = baseRotationX + randomOffsetRef.current.x;
+    const targetY = baseRotationY + randomOffsetRef.current.y * 0.5;
+
+    groupRef.current.rotation.x +=
+      (targetX - groupRef.current.rotation.x) * 0.02;
+    groupRef.current.rotation.y = targetY;
     groupRef.current.rotation.z = 0;
   });
 
@@ -125,7 +148,7 @@ type Eye3DProps = {
 };
 
 export default function Eye3D({ lowPower = false }: Eye3DProps) {
-  const particleCount = lowPower ? 60 : 100;
+  const particleCount = lowPower ? 120 : 200;
 
   return (
     <Canvas
