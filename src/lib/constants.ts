@@ -10,6 +10,7 @@ export const TITLE_TEXT =
 export const NARRATIVE =
   "Une agence qui comprend votre business avant de proposer. Communication stratégique, design, vidéo, site web. Construits sur-mesure, pensés pour convertir.";
 
+export const PRE_CTA_TEXT = "Notre site est en construction, en attendant :";
 export const CTA_LABEL = "Parlons de votre projet";
 export const CTA_HREF =
   "mailto:hello@paradeyesagency.com?subject=Demande%20de%20contact%20via%20paradeyesagency.com";

@@ -6,14 +6,13 @@ import GradientBackground from "@/components/GradientBackground";
 import ParadeyesLogo from "@/components/ParadeyesLogo";
 import PrimaryCTA from "@/components/PrimaryCTA";
 import SocialIcons from "@/components/SocialIcons";
-import WhiteFlare from "@/components/WhiteFlare";
 import WhiteSparkles from "@/components/WhiteSparkles";
 import {
   CTA_HREF,
   CTA_LABEL,
   EASINGS,
   NARRATIVE,
-  SIGNATURE,
+  PRE_CTA_TEXT,
   TITLE_TEXT,
 } from "@/lib/constants";
 
@@ -27,7 +26,6 @@ export default function Home() {
     <main className="relative h-[100dvh] min-h-[100dvh] overflow-hidden">
       <GradientBackground />
       <WhiteSparkles />
-      <WhiteFlare />
 
       <div className="relative z-10 h-[100dvh] safe-top safe-bottom safe-x">
         {/* Logo top-left */}
@@ -46,7 +44,7 @@ export default function Home() {
         {/* Zone centrale */}
         <div className="flex h-full flex-col items-center justify-center px-6 pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28">
           {/* Conteneur œil + burst lumineux d'entrée */}
-          <div className="relative w-[220px] h-[220px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] flex-shrink-0">
+          <div className="relative w-[200px] h-[200px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] flex-shrink-0">
             {/* Aura lumineuse qui précède et enrobe l'œil */}
             {!reduced && (
               <motion.div
@@ -97,7 +95,7 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* Signature (DM Sans SemiBold uppercase electric green) */}
+          {/* Signature (DM Sans SemiBold uppercase electric green) - 2 lignes mobile, 1 ligne md+ */}
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,9 +108,14 @@ export default function Home() {
               ...dmSansStyle,
               textShadow: "0 0 20px rgba(87, 238, 161, 0.3)",
             }}
-            className="mt-4 md:mt-5 lg:mt-6 text-center font-semibold uppercase text-[#57EEA1] text-[13px] md:text-[14px] lg:text-[15px] tracking-[0.18em] leading-[1.4]"
+            className="mt-4 md:mt-5 lg:mt-6 text-center font-semibold uppercase text-[#57EEA1] text-[13px] md:text-[14px] lg:text-[15px] tracking-[0.15em] leading-[1.5]"
           >
-            {SIGNATURE}
+            Agence créative au service
+            <span className="md:hidden">
+              <br />
+            </span>
+            <span className="hidden md:inline"> </span>
+            de votre croissance.
           </motion.p>
 
           {/* Titre central (Satoshi Bold) */}
@@ -144,12 +147,27 @@ export default function Home() {
             {NARRATIVE}
           </motion.p>
 
-          {/* CTA */}
+          {/* Phrase pré-CTA (DM Sans Regular white/60, plus discret) */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: reduced ? 0 : 4.0,
+              duration: 0.8,
+              ease: premium,
+            }}
+            style={dmSansStyle}
+            className="mt-5 md:mt-7 lg:mt-8 text-center font-normal text-white/60 text-[12px] md:text-[13px] lg:text-[14px] leading-[1.5]"
+          >
+            {PRE_CTA_TEXT}
+          </motion.p>
+
+          {/* CTA - serré avec la phrase pré-CTA */}
           <PrimaryCTA
             href={CTA_HREF}
             label={CTA_LABEL}
-            delay={reduced ? 0 : 4.1}
-            className="mt-5 md:mt-7 lg:mt-8"
+            delay={reduced ? 0 : 4.3}
+            className="mt-3 md:mt-4 lg:mt-5"
           />
         </div>
 
@@ -158,7 +176,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: reduced ? 0 : 4.5,
+            delay: reduced ? 0 : 4.6,
             duration: 0.8,
             ease: premium,
           }}

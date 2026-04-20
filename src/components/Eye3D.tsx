@@ -39,8 +39,6 @@ function FloatingParticles({ count }: { count: number }) {
 
 function EyeModel() {
   const groupRef = useRef<THREE.Group>(null);
-  const randomOffsetRef = useRef({ x: 0, y: 0 });
-  const lastRandomUpdateRef = useRef(0);
 
   const data = useLoader(SVGLoader, "/logos/paradeyes-eye.svg");
 
@@ -84,32 +82,18 @@ function EyeModel() {
 
     const time = state.clock.getElapsedTime();
 
-    // Oscillation principale Y (±45°, cycle 12s)
-    const amplitudeY = Math.PI / 4;
-    const frequencyY = (Math.PI * 2) / 12;
-    const baseRotationY = Math.sin(time * frequencyY) * amplitudeY;
+    // Rotation Y principale : sinus ±45° cycle 12s
+    const rotY = Math.sin(time * 0.5236) * 0.7854;
+    // Rotation Y secondaire : ±3° cycle 7s, phase décalée
+    const rotYSubtle = Math.sin(time * 0.8976 + 1.047) * 0.0524;
+    // Rotation X principale : ±5° cycle 19s, phase décalée
+    const rotX = Math.sin(time * 0.3307 + 0.523) * 0.0873;
+    // Rotation X micro : ±2° cycle 11s, phase décalée
+    const rotXMicro = Math.sin(time * 0.5712 + 2.094) * 0.0349;
 
-    // Oscillation secondaire X (±8°, cycle 18s, déphasage π/3)
-    const amplitudeX = (Math.PI / 180) * 8;
-    const frequencyX = (Math.PI * 2) / 18;
-    const baseRotationX =
-      Math.sin(time * frequencyX + Math.PI / 3) * amplitudeX;
-
-    // Variations aléatoires toutes les 3s, lissées par lerp
-    if (time - lastRandomUpdateRef.current > 3) {
-      randomOffsetRef.current = {
-        x: (Math.random() - 0.5) * 0.1,
-        y: (Math.random() - 0.5) * 0.15,
-      };
-      lastRandomUpdateRef.current = time;
-    }
-
-    const targetX = baseRotationX + randomOffsetRef.current.x;
-    const targetY = baseRotationY + randomOffsetRef.current.y * 0.5;
-
-    groupRef.current.rotation.x +=
-      (targetX - groupRef.current.rotation.x) * 0.02;
-    groupRef.current.rotation.y = targetY;
+    // Application directe, 100% déterministe, aucun lerp ni state
+    groupRef.current.rotation.y = rotY + rotYSubtle;
+    groupRef.current.rotation.x = rotX + rotXMicro;
     groupRef.current.rotation.z = 0;
   });
 
