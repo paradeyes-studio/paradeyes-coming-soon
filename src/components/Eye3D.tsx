@@ -82,18 +82,20 @@ function EyeModel() {
 
     const time = state.clock.getElapsedTime();
 
-    // Rotation Y principale : sinus ±45° cycle 12s
-    const rotY = Math.sin(time * 0.5236) * 0.7854;
-    // Rotation Y secondaire : ±3° cycle 7s, phase décalée
-    const rotYSubtle = Math.sin(time * 0.8976 + 1.047) * 0.0524;
-    // Rotation X principale : ±5° cycle 19s, phase décalée
-    const rotX = Math.sin(time * 0.3307 + 0.523) * 0.0873;
-    // Rotation X micro : ±2° cycle 11s, phase décalée
-    const rotXMicro = Math.sin(time * 0.5712 + 2.094) * 0.0349;
+    const amplitudeY = 0.9599;
+    const periodY = 14;
+    const frequencyY = (Math.PI * 2) / periodY;
+    const phaseY = Math.sin(time * frequencyY);
+    const easedY = Math.sign(phaseY) * Math.pow(Math.abs(phaseY), 0.65);
+    const rotY = easedY * amplitudeY;
 
-    // Application directe, 100% déterministe, aucun lerp ni state
-    groupRef.current.rotation.y = rotY + rotYSubtle;
-    groupRef.current.rotation.x = rotX + rotXMicro;
+    const amplitudeX = 0.0524;
+    const periodX = 30;
+    const frequencyX = (Math.PI * 2) / periodX;
+    const rotX = Math.sin(time * frequencyX + 1.3) * amplitudeX;
+
+    groupRef.current.rotation.y = rotY;
+    groupRef.current.rotation.x = rotX;
     groupRef.current.rotation.z = 0;
   });
 
@@ -139,11 +141,13 @@ export default function Eye3D({ lowPower = false }: Eye3DProps) {
       gl={{
         antialias: true,
         alpha: true,
+        premultipliedAlpha: false,
         powerPreference: "high-performance",
       }}
       camera={{ position: [0, 0, 4], fov: 40 }}
       dpr={[1, 2]}
-      style={{ background: "transparent" }}
+      flat
+      style={{ background: "transparent", pointerEvents: "none" }}
     >
       <ambientLight color="#023236" intensity={0.4} />
 

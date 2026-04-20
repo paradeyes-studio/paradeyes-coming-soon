@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import EyeExperience from "@/components/EyeExperience";
 import GradientBackground from "@/components/GradientBackground";
 import ParadeyesLogo from "@/components/ParadeyesLogo";
@@ -21,6 +22,16 @@ const dmSansStyle = { fontFamily: "var(--font-dm-sans), sans-serif" };
 
 export default function Home() {
   const reduced = useReducedMotion();
+  const [showBurst, setShowBurst] = useState(true);
+
+  useEffect(() => {
+    if (reduced) {
+      setShowBurst(false);
+      return;
+    }
+    const timer = setTimeout(() => setShowBurst(false), 2600);
+    return () => clearTimeout(timer);
+  }, [reduced]);
 
   return (
     <main className="relative h-[100dvh] min-h-[100dvh] overflow-hidden">
@@ -44,32 +55,39 @@ export default function Home() {
         {/* Zone centrale */}
         <div className="flex h-full flex-col items-center justify-center px-6 pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28">
           {/* Conteneur œil + burst lumineux d'entrée */}
-          <div className="relative w-[200px] h-[200px] md:w-[320px] md:h-[320px] lg:w-[380px] lg:h-[380px] flex-shrink-0">
+          <div
+            className="relative w-[260px] h-[260px] md:w-[380px] md:h-[380px] lg:w-[460px] lg:h-[460px] flex-shrink-0"
+            style={{ background: "transparent", isolation: "isolate" }}
+          >
             {/* Aura lumineuse qui précède et enrobe l'œil */}
-            {!reduced && (
-              <motion.div
-                aria-hidden="true"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{
-                  opacity: [0, 1, 1, 0],
-                  scale: [0, 1.5, 2, 3],
-                }}
-                transition={{
-                  duration: 2.5,
-                  ease: premium,
-                  times: [0, 0.2, 0.6, 1],
-                }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                style={{
-                  width: "400px",
-                  height: "400px",
-                  background:
-                    "radial-gradient(circle, rgba(87, 238, 161, 0.4) 0%, rgba(87, 238, 161, 0.2) 30%, rgba(87, 238, 161, 0.05) 60%, transparent 100%)",
-                  filter: "blur(20px)",
-                  zIndex: 15,
-                }}
-              />
-            )}
+            <AnimatePresence>
+              {showBurst && !reduced && (
+                <motion.div
+                  key="entrance-burst"
+                  aria-hidden="true"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 0],
+                    scale: [0, 1.5, 2, 3],
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 2.5,
+                    ease: premium,
+                    times: [0, 0.2, 0.6, 1],
+                  }}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                  style={{
+                    width: "400px",
+                    height: "400px",
+                    background:
+                      "radial-gradient(circle, rgba(87, 238, 161, 0.4) 0%, rgba(87, 238, 161, 0.2) 30%, rgba(87, 238, 161, 0.05) 60%, transparent 100%)",
+                    filter: "blur(20px)",
+                    zIndex: 15,
+                  }}
+                />
+              )}
+            </AnimatePresence>
 
             {/* Œil 3D matérialisation après le burst */}
             <motion.div
