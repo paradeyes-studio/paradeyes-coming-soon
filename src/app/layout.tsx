@@ -57,15 +57,16 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Paradeyes Agency — On comprend. On conçoit. On construit.",
+    title:
+      "Paradeyes Agency — Agence créative au service de votre croissance",
     description:
       "Agence créative française. Communication stratégique, design, vidéo et site web sur-mesure pensés pour convertir. Notre site est en construction.",
     images: [
       {
-        url: "/opengraph-image",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Paradeyes Agency — On comprend. On conçoit. On construit.",
+        alt: "Paradeyes Agency — Agence créative au service de votre croissance",
         type: "image/png",
       },
     ],
@@ -75,10 +76,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@paradeyesagency",
     creator: "@paradeyesagency",
-    title: "Paradeyes Agency — On comprend. On conçoit. On construit.",
+    title:
+      "Paradeyes Agency — Agence créative au service de votre croissance",
     description:
       "Agence créative française. Communication stratégique, design, vidéo et site web sur-mesure pensés pour convertir.",
-    images: ["/opengraph-image"],
+    images: ["/og-image.png"],
   },
 
   robots: {

@@ -122,7 +122,10 @@ try {
       descriptionOk:
         !!seoHead.description && seoHead.description.length >= 100,
       ogTitleOk: !!seoHead.ogTitle,
-      ogImageOk: !!seoHead.ogImage && seoHead.ogImage.includes("opengraph"),
+      ogImageOk:
+        !!seoHead.ogImage &&
+        (seoHead.ogImage.includes("og-image") ||
+          seoHead.ogImage.includes("opengraph")),
       twitterOk: seoHead.twitterCard === "summary_large_image",
       canonicalOk: seoHead.canonical === "https://paradeyesagency.com",
       manifestOk: seoHead.manifest === "/manifest.json",
