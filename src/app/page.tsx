@@ -43,12 +43,60 @@ export default function Home() {
 
         {/* Zone centrale */}
         <div className="flex h-full w-full flex-col items-center justify-center px-6 pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28">
-          {/* Conteneur œil statique, l'entrée est gérée par l'assemblage 3D */}
+          {/* Conteneur œil : brume lumineuse centrée + fade in de l'œil */}
           <div
+            data-testid="eye-wrapper"
             className="relative mx-auto block w-[260px] h-[260px] md:w-[380px] md:h-[380px] lg:w-[460px] lg:h-[460px]"
-            style={{ background: "transparent", isolation: "isolate" }}
           >
-            <EyeExperience />
+            {/* Brume lumineuse electric green qui émerge puis se dissipe */}
+            {!reduced && (
+              <motion.div
+                aria-hidden="true"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{
+                  opacity: [0, 0.9, 0.9, 0.4, 0],
+                  scale: [0.5, 1.3, 1.5, 2.0, 2.5],
+                }}
+                transition={{
+                  duration: 2.8,
+                  delay: 0.3,
+                  times: [0, 0.25, 0.55, 0.8, 1],
+                  ease: premium,
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
+                style={{
+                  width: "500px",
+                  height: "500px",
+                  background:
+                    "radial-gradient(circle, rgba(87, 238, 161, 0.5) 0%, rgba(87, 238, 161, 0.25) 25%, rgba(87, 238, 161, 0.1) 50%, rgba(87, 238, 161, 0.03) 75%, transparent 100%)",
+                  filter: "blur(30px)",
+                }}
+              />
+            )}
+
+            {/* Œil 3D : fade in centré avec dissipation du blur */}
+            <motion.div
+              initial={
+                reduced
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.92, filter: "blur(25px)" }
+              }
+              animate={
+                reduced
+                  ? { opacity: 1 }
+                  : { opacity: 1, scale: 1, filter: "blur(0px)" }
+              }
+              transition={{
+                delay: reduced ? 0 : 0.8,
+                duration: reduced ? 0.6 : 2.0,
+                ease: premium,
+                filter: { duration: 1.8 },
+              }}
+              className="relative w-full h-full z-10"
+              style={{ background: "transparent", isolation: "isolate" }}
+            >
+              <EyeExperience />
+            </motion.div>
           </div>
 
           {/* Signature (DM Sans SemiBold uppercase electric green) - 2 lignes mobile, 1 ligne md+ */}
