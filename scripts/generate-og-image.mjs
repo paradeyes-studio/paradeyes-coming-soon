@@ -12,12 +12,22 @@ async function renderLogoToPng() {
   );
   const logoSvgBuffer = fs.readFileSync(logoSvgPath);
 
-  const logoPng = await sharp(logoSvgBuffer)
-    .resize(520, 65, {
+  const RENDER_WIDTH = 1040;
+  const RENDER_HEIGHT = 130;
+
+  const logoPng = await sharp(logoSvgBuffer, {
+    density: 600,
+  })
+    .resize(RENDER_WIDTH, RENDER_HEIGHT, {
       fit: "contain",
       background: { r: 0, g: 0, b: 0, alpha: 0 },
+      kernel: "lanczos3",
     })
-    .png()
+    .png({
+      quality: 100,
+      compressionLevel: 9,
+      adaptiveFiltering: true,
+    })
     .toBuffer();
 
   return logoPng;
@@ -119,6 +129,7 @@ async function generateOGImage() {
                   style: {
                     width: "520px",
                     height: "65px",
+                    objectFit: "contain",
                   },
                 },
               },
