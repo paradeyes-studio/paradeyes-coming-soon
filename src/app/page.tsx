@@ -56,7 +56,7 @@ export default function Home() {
         <div className="flex h-full flex-col items-center justify-center px-6 pt-16 pb-20 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28">
           {/* Conteneur œil + burst lumineux d'entrée */}
           <div
-            className="relative w-[260px] h-[260px] md:w-[380px] md:h-[380px] lg:w-[460px] lg:h-[460px] flex-shrink-0"
+            className="relative mx-auto block w-[300px] h-[300px] md:w-[380px] md:h-[380px] lg:w-[460px] lg:h-[460px] flex-shrink-0"
             style={{ background: "transparent", isolation: "isolate" }}
           >
             {/* Aura lumineuse qui précède et enrobe l'œil */}
@@ -126,7 +126,7 @@ export default function Home() {
               ...dmSansStyle,
               textShadow: "0 0 20px rgba(87, 238, 161, 0.3)",
             }}
-            className="mt-4 md:mt-5 lg:mt-6 text-center font-semibold uppercase text-[#57EEA1] text-[13px] md:text-[14px] lg:text-[15px] tracking-[0.15em] leading-[1.5]"
+            className="mt-3 md:mt-5 lg:mt-6 text-center font-semibold uppercase text-[#57EEA1] text-[13px] md:text-[14px] lg:text-[15px] tracking-[0.15em] leading-[1.5]"
           >
             Agence créative au service
             <span className="md:hidden">
@@ -145,7 +145,7 @@ export default function Home() {
               duration: 0.9,
               ease: premium,
             }}
-            className="mt-3 md:mt-4 lg:mt-5 text-center font-sans font-bold text-white text-[22px] md:text-[30px] lg:text-[38px] xl:text-[46px] 2xl:text-[52px] tracking-[-0.02em] leading-[1.15]"
+            className="mt-2 md:mt-4 lg:mt-5 text-center font-sans font-bold text-white text-[22px] md:text-[30px] lg:text-[38px] xl:text-[46px] 2xl:text-[52px] tracking-[-0.02em] leading-[1.15]"
           >
             {TITLE_TEXT}
           </motion.h1>
@@ -160,7 +160,7 @@ export default function Home() {
               ease: premium,
             }}
             style={dmSansStyle}
-            className="mt-4 md:mt-6 lg:mt-8 max-w-[620px] text-center font-normal text-white/70 text-[13px] md:text-[15px] lg:text-[16px] leading-[1.6]"
+            className="mt-3 md:mt-6 lg:mt-8 max-w-[620px] text-center font-normal text-white/70 text-[13px] md:text-[15px] lg:text-[16px] leading-[1.6]"
           >
             {NARRATIVE}
           </motion.p>
@@ -175,7 +175,7 @@ export default function Home() {
               ease: premium,
             }}
             style={dmSansStyle}
-            className="mt-5 md:mt-7 lg:mt-8 text-center font-normal text-white/60 text-[12px] md:text-[13px] lg:text-[14px] leading-[1.5]"
+            className="mt-4 md:mt-7 lg:mt-8 text-center font-normal text-white/60 text-[12px] md:text-[13px] lg:text-[14px] leading-[1.5]"
           >
             {PRE_CTA_TEXT}
           </motion.p>

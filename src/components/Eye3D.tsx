@@ -109,18 +109,18 @@ function EyeModel() {
           <mesh key={i} geometry={g}>
             <meshPhysicalMaterial
               color={new THREE.Color("#57EEA1")}
-              metalness={0.5}
-              roughness={0.3}
-              iridescence={0.3}
+              metalness={0.45}
+              roughness={0.4}
+              iridescence={0.25}
               iridescenceIOR={1.25}
               iridescenceThicknessRange={[150, 400]}
-              clearcoat={0.4}
-              clearcoatRoughness={0.35}
-              reflectivity={0.4}
-              envMapIntensity={0.15}
-              sheen={0.2}
+              clearcoat={0.25}
+              clearcoatRoughness={0.6}
+              reflectivity={0.3}
+              envMapIntensity={0.1}
+              sheen={0.15}
               sheenColor={new THREE.Color("#57EEA1")}
-              sheenRoughness={0.6}
+              sheenRoughness={0.8}
             />
           </mesh>
         ))}
@@ -143,10 +143,11 @@ export default function Eye3D({ lowPower = false }: Eye3DProps) {
         alpha: true,
         premultipliedAlpha: false,
         powerPreference: "high-performance",
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 0.85,
       }}
       camera={{ position: [0, 0, 4], fov: 40 }}
       dpr={[1, 2]}
-      flat
       style={{ background: "transparent", pointerEvents: "none" }}
     >
       <ambientLight color="#023236" intensity={0.4} />
