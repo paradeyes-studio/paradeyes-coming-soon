@@ -23,6 +23,11 @@ export const SITE_URL = "https://paradeyesagency.com";
 export const SITE_DESCRIPTION =
   "Paradeyes est une agence créative au service de votre croissance. Communication stratégique, design, vidéo et site web pour les marques qui veulent scaler.";
 
+export const SEO_TITLE =
+  "Paradeyes | Agence créative au service de votre croissance";
+export const SEO_DESCRIPTION =
+  "Une agence qui comprend votre business avant de proposer. Communication stratégique, design, vidéo, site web. Construits sur-mesure, pensés pour convertir.";
+
 export const COLORS = {
   darkGreen: "#023236",
   electricGreen: "#57EEA1",

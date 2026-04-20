@@ -3,7 +3,31 @@ import sharp from "sharp";
 import fs from "node:fs";
 import path from "node:path";
 
+async function renderLogoToPng() {
+  const logoSvgPath = path.join(
+    process.cwd(),
+    "public",
+    "logos",
+    "paradeyes-logo-white-green.svg",
+  );
+  const logoSvgBuffer = fs.readFileSync(logoSvgPath);
+
+  const logoPng = await sharp(logoSvgBuffer)
+    .resize(520, 65, {
+      fit: "contain",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    })
+    .png()
+    .toBuffer();
+
+  return logoPng;
+}
+
 async function generateOGImage() {
+  console.log("Rendering logo SVG to transparent PNG...");
+  const logoPngBuffer = await renderLogoToPng();
+  const logoBase64 = `data:image/png;base64,${logoPngBuffer.toString("base64")}`;
+
   console.log("Loading fonts from @fontsource/dm-sans...");
 
   const FONT_DIR = path.join(
@@ -43,7 +67,6 @@ async function generateOGImage() {
         overflow: "hidden",
       },
       children: [
-        // Halo electric green bottom-right
         {
           type: "div",
           props: {
@@ -60,7 +83,6 @@ async function generateOGImage() {
             },
           },
         },
-        // Halo secondary top-left
         {
           type: "div",
           props: {
@@ -77,7 +99,7 @@ async function generateOGImage() {
             },
           },
         },
-        // TOP : PARADEYES logo
+        // TOP : Paradeyes logo (eye + wordmark SVG)
         {
           type: "div",
           props: {
@@ -89,17 +111,15 @@ async function generateOGImage() {
             },
             children: [
               {
-                type: "div",
+                type: "img",
                 props: {
+                  src: logoBase64,
+                  width: 520,
+                  height: 65,
                   style: {
-                    color: "#FFFFFF",
-                    fontSize: "34px",
-                    fontWeight: 700,
-                    letterSpacing: "7px",
-                    textTransform: "uppercase",
-                    fontFamily: "DM Sans",
+                    width: "520px",
+                    height: "65px",
                   },
-                  children: "PARADEYES",
                 },
               },
             ],

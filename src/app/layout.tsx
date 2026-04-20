@@ -1,7 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import JsonLd from "@/components/JsonLd";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import {
+  SEO_DESCRIPTION,
+  SEO_TITLE,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/constants";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -15,13 +20,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
   title: {
-    default:
-      "Paradeyes Agency — Agence créative au service de votre croissance",
-    template: "%s | Paradeyes Agency",
+    default: SEO_TITLE,
+    template: "%s | Paradeyes",
   },
 
-  description:
-    "Paradeyes est une agence créative française qui comprend votre business avant de proposer. Communication stratégique, design, vidéo et site web sur-mesure pensés pour convertir. Basée à Cannes.",
+  description: SEO_DESCRIPTION,
 
   keywords: [
     "agence créative",
@@ -57,16 +60,14 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title:
-      "Paradeyes Agency — Agence créative au service de votre croissance",
-    description:
-      "Agence créative française. Communication stratégique, design, vidéo et site web sur-mesure pensés pour convertir. Notre site est en construction.",
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Paradeyes Agency — Agence créative au service de votre croissance",
+        alt: "Paradeyes - Agence créative au service de votre croissance",
         type: "image/png",
       },
     ],
@@ -76,10 +77,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@paradeyesagency",
     creator: "@paradeyesagency",
-    title:
-      "Paradeyes Agency — Agence créative au service de votre croissance",
-    description:
-      "Agence créative française. Communication stratégique, design, vidéo et site web sur-mesure pensés pour convertir.",
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
     images: ["/og-image.png"],
   },
 

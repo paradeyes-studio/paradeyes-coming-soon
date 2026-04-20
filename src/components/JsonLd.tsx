@@ -2,7 +2,7 @@ import {
   EMAIL,
   INSTAGRAM_URL,
   LINKEDIN_URL,
-  SITE_DESCRIPTION,
+  SEO_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
 } from "@/lib/constants";
@@ -21,7 +21,7 @@ export default function JsonLd() {
       width: 512,
       height: 512,
     },
-    description: SITE_DESCRIPTION,
+    description: SEO_DESCRIPTION,
     email: EMAIL,
     address: {
       "@type": "PostalAddress",
@@ -55,7 +55,7 @@ export default function JsonLd() {
     "@id": `${SITE_URL}/#website`,
     url: SITE_URL,
     name: SITE_NAME,
-    description: SITE_DESCRIPTION,
+    description: SEO_DESCRIPTION,
     publisher: {
       "@id": `${SITE_URL}/#organization`,
     },
