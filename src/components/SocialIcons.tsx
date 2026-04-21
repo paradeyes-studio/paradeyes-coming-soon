@@ -1,7 +1,7 @@
-import { INSTAGRAM_URL, LINKEDIN_URL } from "@/lib/constants";
-
 type SocialIconsProps = {
   className?: string;
+  linkedinUrl: string;
+  instagramUrl: string;
 };
 
 const linkClasses =
@@ -9,11 +9,15 @@ const linkClasses =
 
 const iconClasses = "w-[22px] h-[22px] md:w-5 md:h-5";
 
-export default function SocialIcons({ className }: SocialIconsProps) {
+export default function SocialIcons({
+  className,
+  linkedinUrl,
+  instagramUrl,
+}: SocialIconsProps) {
   return (
     <div className={`flex items-center gap-5 md:gap-6 ${className ?? ""}`}>
       <a
-        href={LINKEDIN_URL}
+        href={linkedinUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Paradeyes sur LinkedIn"
@@ -31,7 +35,7 @@ export default function SocialIcons({ className }: SocialIconsProps) {
         </svg>
       </a>
       <a
-        href={INSTAGRAM_URL}
+        href={instagramUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Paradeyes sur Instagram"

@@ -1,12 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import JsonLd from "@/components/JsonLd";
-import {
-  SEO_DESCRIPTION,
-  SEO_TITLE,
-  SITE_NAME,
-  SITE_URL,
-} from "@/lib/constants";
+import { FALLBACK_SEO, SITE_NAME, SITE_URL } from "@/lib/constants";
+import { seoQuery, type SeoData } from "@/lib/sanity.queries";
+import { sanityFetch } from "@/lib/sanityFetch";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -16,102 +13,94 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+export async function generateMetadata(): Promise<Metadata> {
+  const sanitySeo = await sanityFetch<SeoData>({
+    query: seoQuery,
+    tags: ["seo"],
+  });
+  const seo: SeoData = sanitySeo ?? FALLBACK_SEO;
 
-  title: {
-    default: SEO_TITLE,
-    template: "%s | Paradeyes",
-  },
+  return {
+    metadataBase: new URL(SITE_URL),
 
-  description: SEO_DESCRIPTION,
-
-  keywords: [
-    "agence créative",
-    "agence communication",
-    "agence communication Cannes",
-    "agence créative Cannes",
-    "communication stratégique",
-    "design premium",
-    "motion design",
-    "site web sur-mesure",
-    "direction artistique",
-    "identité visuelle",
-    "agence de communication France",
-    "agence marketing",
-    "vidéo corporate",
-    "Paradeyes",
-    "Paradeyes Agency",
-  ],
-
-  authors: [{ name: "Basilide Gonot", url: SITE_URL }],
-  creator: "Paradeyes Agency",
-  publisher: "Paradeyes Agency",
-
-  alternates: {
-    canonical: SITE_URL,
-    languages: {
-      "fr-FR": SITE_URL,
+    title: {
+      default: seo.titleGoogle,
+      template: "%s | Paradeyes",
     },
-  },
 
-  openGraph: {
-    type: "website",
-    locale: "fr_FR",
-    url: SITE_URL,
-    siteName: SITE_NAME,
-    title: SEO_TITLE,
-    description: SEO_DESCRIPTION,
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Paradeyes - Agence créative au service de votre croissance",
-        type: "image/png",
+    description: seo.descriptionGoogle,
+
+    keywords: [...seo.keywords],
+
+    authors: [{ name: "Basilide Gonot", url: SITE_URL }],
+    creator: "Paradeyes Agency",
+    publisher: "Paradeyes Agency",
+
+    alternates: {
+      canonical: SITE_URL,
+      languages: {
+        "fr-FR": SITE_URL,
       },
-    ],
-  },
+    },
 
-  twitter: {
-    card: "summary_large_image",
-    site: "@paradeyesagency",
-    creator: "@paradeyesagency",
-    title: SEO_TITLE,
-    description: SEO_DESCRIPTION,
-    images: ["/og-image.png"],
-  },
+    openGraph: {
+      type: "website",
+      locale: "fr_FR",
+      url: SITE_URL,
+      siteName: SITE_NAME,
+      title: seo.titleSocial,
+      description: seo.descriptionSocial,
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: "Paradeyes - Agence créative au service de votre croissance",
+          type: "image/png",
+        },
+      ],
+    },
 
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    twitter: {
+      card: "summary_large_image",
+      site: "@paradeyesagency",
+      creator: "@paradeyesagency",
+      title: seo.titleSocial,
+      description: seo.descriptionSocial,
+      images: ["/og-image.png"],
+    },
+
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
 
-  category: "Agence de communication",
+    category: "Agence de communication",
 
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/favicon-512x512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    shortcut: "/favicon.ico",
-  },
+    icons: {
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+        { url: "/favicon-512x512.png", sizes: "512x512", type: "image/png" },
+      ],
+      apple: [
+        { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      ],
+      shortcut: "/favicon.ico",
+    },
 
-  manifest: "/manifest.json",
-};
+    manifest: "/manifest.json",
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#023236",
