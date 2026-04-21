@@ -105,7 +105,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 3.2,
+              delay: reduced ? 0 : 2.4,
               duration: 0.8,
               ease: premium,
             }}
@@ -128,7 +128,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 3.45,
+              delay: reduced ? 0 : 2.65,
               duration: 0.9,
               ease: premium,
             }}
@@ -142,7 +142,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 3.75,
+              delay: reduced ? 0 : 2.9,
               duration: 0.9,
               ease: premium,
             }}
@@ -162,7 +162,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 4.05,
+              delay: reduced ? 0 : 3.15,
               duration: 0.8,
               ease: premium,
             }}
@@ -176,7 +176,7 @@ export default function Home() {
           <PrimaryCTA
             href={CTA_HREF}
             label={CTA_LABEL}
-            delay={reduced ? 0 : 4.3}
+            delay={reduced ? 0 : 3.35}
             className="mt-3 md:mt-4 lg:mt-5"
           />
         </div>
@@ -186,7 +186,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: reduced ? 0 : 4.55,
+            delay: reduced ? 0 : 3.55,
             duration: 0.8,
             ease: premium,
           }}
