@@ -126,12 +126,12 @@ function EyeModel() {
               transmission={0.35}
               thickness={1.2}
               ior={1.45}
-              iridescence={0.75}
-              iridescenceIOR={1.35}
-              iridescenceThicknessRange={[200, 700]}
-              clearcoat={0.85}
-              clearcoatRoughness={0.1}
-              reflectivity={0.6}
+              iridescence={0.9}
+              iridescenceIOR={1.4}
+              iridescenceThicknessRange={[150, 900]}
+              clearcoat={0.65}
+              clearcoatRoughness={0.35}
+              reflectivity={0.5}
               envMapIntensity={0.45}
               sheen={0.5}
               sheenColor={new THREE.Color("#7FFFAB")}
@@ -196,14 +196,6 @@ export default function Eye3D({ lowPower = false }: Eye3DProps) {
         color="#A7FFD0"
         decay={2}
       />
-      <pointLight
-        position={[0, 0, 3]}
-        intensity={0.8}
-        color="#57EEA1"
-        distance={5}
-        decay={2}
-      />
-
       <Suspense fallback={null}>
         <Environment
           preset="studio"
