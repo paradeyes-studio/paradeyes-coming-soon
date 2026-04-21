@@ -121,18 +121,26 @@ function EyeModel() {
           <mesh key={i} geometry={g}>
             <meshPhysicalMaterial
               color={new THREE.Color("#57EEA1")}
-              metalness={0.45}
-              roughness={0.4}
-              iridescence={0.25}
-              iridescenceIOR={1.25}
-              iridescenceThicknessRange={[150, 400]}
-              clearcoat={0.25}
-              clearcoatRoughness={0.6}
-              reflectivity={0.3}
-              envMapIntensity={0.1}
-              sheen={0.15}
-              sheenColor={new THREE.Color("#57EEA1")}
-              sheenRoughness={0.8}
+              metalness={0.15}
+              roughness={0.15}
+              transmission={0.35}
+              thickness={1.2}
+              ior={1.45}
+              iridescence={0.75}
+              iridescenceIOR={1.35}
+              iridescenceThicknessRange={[200, 700]}
+              clearcoat={0.85}
+              clearcoatRoughness={0.1}
+              reflectivity={0.6}
+              envMapIntensity={0.45}
+              sheen={0.5}
+              sheenColor={new THREE.Color("#7FFFAB")}
+              sheenRoughness={0.3}
+              emissive={new THREE.Color("#57EEA1")}
+              emissiveIntensity={0.15}
+              attenuationColor={new THREE.Color("#57EEA1")}
+              attenuationDistance={2.5}
+              transparent={false}
             />
           </mesh>
         ))}
@@ -156,36 +164,51 @@ export default function Eye3D({ lowPower = false }: Eye3DProps) {
         premultipliedAlpha: false,
         powerPreference: "high-performance",
         toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 0.85,
+        toneMappingExposure: 0.9,
       }}
       camera={{ position: [0, 0, 4], fov: 40 }}
       dpr={[1, 2]}
       style={{ background: "transparent", pointerEvents: "none" }}
     >
-      <ambientLight color="#023236" intensity={0.4} />
+      <ambientLight color="#57EEA1" intensity={0.5} />
 
       <spotLight
-        position={[4, 5, 5]}
-        angle={0.5}
+        position={[5, 6, 6]}
+        angle={0.55}
         penumbra={1}
-        intensity={1.3}
-        decay={0}
-        color="#57EEA1"
+        intensity={2.5}
+        color="#7FFFAB"
+        decay={1.5}
       />
       <spotLight
-        position={[-3, -2, 3]}
-        angle={0.6}
+        position={[-4, -3, 4]}
+        angle={0.65}
         penumbra={1}
-        intensity={0.8}
-        decay={0}
+        intensity={1.6}
         color="#57EEA1"
+        decay={1.8}
+      />
+      <spotLight
+        position={[0, 4, -3]}
+        angle={0.7}
+        penumbra={0.9}
+        intensity={1.0}
+        color="#A7FFD0"
+        decay={2}
+      />
+      <pointLight
+        position={[0, 0, 3]}
+        intensity={0.8}
+        color="#57EEA1"
+        distance={5}
+        decay={2}
       />
 
       <Suspense fallback={null}>
         <Environment
           preset="studio"
           background={false}
-          environmentIntensity={0.15}
+          environmentIntensity={0.55}
           environmentRotation={[0, Math.PI / 4, 0]}
         />
         <EyeModel />
