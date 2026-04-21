@@ -14,7 +14,7 @@ export async function sanityFetch<T>({
       query,
       {},
       {
-        next: { revalidate: tags.length ? false : revalidate, tags },
+        next: { revalidate, tags },
       }
     );
   } catch (error) {
