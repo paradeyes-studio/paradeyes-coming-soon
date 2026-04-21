@@ -3,25 +3,26 @@ import sharp from "sharp";
 import fs from "node:fs";
 import path from "node:path";
 
-async function renderLogoToPng() {
-  const logoSvgPath = path.join(
+async function loadLogoPng() {
+  const logoPngPath = path.join(
     process.cwd(),
     "public",
     "logos",
-    "paradeyes-logo-white-green.svg",
+    "paradeyes-logo-og.png",
   );
-  const logoSvgBuffer = fs.readFileSync(logoSvgPath);
 
-  const RENDER_WIDTH = 1040;
-  const RENDER_HEIGHT = 130;
+  if (!fs.existsSync(logoPngPath)) {
+    throw new Error(
+      `Logo PNG introuvable: ${logoPngPath}. Le client doit déposer le fichier à cet emplacement.`,
+    );
+  }
 
-  const logoPng = await sharp(logoSvgBuffer, {
-    density: 600,
-  })
-    .resize(RENDER_WIDTH, RENDER_HEIGHT, {
+  const logoPng = await sharp(logoPngPath)
+    .resize(1040, 130, {
       fit: "contain",
       background: { r: 0, g: 0, b: 0, alpha: 0 },
       kernel: "lanczos3",
+      withoutEnlargement: false,
     })
     .png({
       quality: 100,
@@ -34,8 +35,8 @@ async function renderLogoToPng() {
 }
 
 async function generateOGImage() {
-  console.log("Rendering logo SVG to transparent PNG...");
-  const logoPngBuffer = await renderLogoToPng();
+  console.log("Loading official logo PNG...");
+  const logoPngBuffer = await loadLogoPng();
   const logoBase64 = `data:image/png;base64,${logoPngBuffer.toString("base64")}`;
 
   console.log("Loading fonts from @fontsource/dm-sans...");

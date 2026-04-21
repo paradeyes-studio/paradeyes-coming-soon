@@ -7,8 +7,11 @@ export const SIGNATURE = "Agence créative au service de votre croissance.";
 export const TITLE_TEXT =
   "On\u00A0comprend. On\u00A0conçoit. On\u00A0construit.";
 
-export const NARRATIVE =
-  "Une agence qui comprend votre business avant de proposer. Communication stratégique, design, vidéo, site web. Construits sur-mesure, pensés pour convertir.";
+export const NARRATIVE_PART_1 =
+  "Une agence qui comprend votre business avant de proposer. Communication stratégique, design, vidéo, site web.";
+export const NARRATIVE_PART_2 =
+  "Construits sur-mesure, pensés pour convertir.";
+export const NARRATIVE = `${NARRATIVE_PART_1} ${NARRATIVE_PART_2}`;
 
 export const PRE_CTA_TEXT = "Notre site est en construction, en attendant :";
 export const CTA_LABEL = "Parlons de votre projet";

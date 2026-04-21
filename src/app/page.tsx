@@ -11,7 +11,8 @@ import {
   CTA_HREF,
   CTA_LABEL,
   EASINGS,
-  NARRATIVE,
+  NARRATIVE_PART_1,
+  NARRATIVE_PART_2,
   PRE_CTA_TEXT,
   TITLE_TEXT,
 } from "@/lib/constants";
@@ -104,7 +105,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 3.8,
+              delay: reduced ? 0 : 3.2,
               duration: 0.8,
               ease: premium,
             }}
@@ -127,7 +128,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 4.1,
+              delay: reduced ? 0 : 3.45,
               duration: 0.9,
               ease: premium,
             }}
@@ -141,14 +142,19 @@ export default function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 4.5,
+              delay: reduced ? 0 : 3.75,
               duration: 0.9,
               ease: premium,
             }}
             style={dmSansStyle}
             className="mt-3 md:mt-6 lg:mt-8 max-w-[620px] text-center font-normal text-white/70 text-[13px] md:text-[15px] lg:text-[16px] leading-[1.6]"
           >
-            {NARRATIVE}
+            {NARRATIVE_PART_1}
+            <span className="md:hidden">
+              <br />
+            </span>
+            <span className="hidden md:inline"> </span>
+            {NARRATIVE_PART_2}
           </motion.p>
 
           {/* Phrase pré-CTA (DM Sans Regular white/60, plus discret) */}
@@ -156,7 +162,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: reduced ? 0 : 4.9,
+              delay: reduced ? 0 : 4.05,
               duration: 0.8,
               ease: premium,
             }}
@@ -170,7 +176,7 @@ export default function Home() {
           <PrimaryCTA
             href={CTA_HREF}
             label={CTA_LABEL}
-            delay={reduced ? 0 : 5.2}
+            delay={reduced ? 0 : 4.3}
             className="mt-3 md:mt-4 lg:mt-5"
           />
         </div>
@@ -180,7 +186,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: reduced ? 0 : 5.5,
+            delay: reduced ? 0 : 4.55,
             duration: 0.8,
             ease: premium,
           }}
