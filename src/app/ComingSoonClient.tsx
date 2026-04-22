@@ -18,17 +18,8 @@ type Props = {
   contact: ContactData;
 };
 
-function splitNarrative(narratif: string): [string, string] {
-  const parts = narratif.split(/\.\s+/);
-  if (parts.length < 2) return [narratif, ""];
-  const first = parts.slice(0, -1).join(". ") + ".";
-  const second = parts[parts.length - 1];
-  return [first, second];
-}
-
 export default function ComingSoonClient({ data, contact }: Props) {
   const reduced = useReducedMotion();
-  const [narrativePart1, narrativePart2] = splitNarrative(data.narratif);
   const ctaHref = `mailto:${contact.email}?subject=${encodeURIComponent(
     data.mailtoSubject
   )}`;
@@ -152,18 +143,9 @@ export default function ComingSoonClient({ data, contact }: Props) {
               ease: premium,
             }}
             style={dmSansStyle}
-            className="mt-3 md:mt-6 lg:mt-8 max-w-[620px] text-center font-normal text-white/70 text-[13px] md:text-[15px] lg:text-[16px] leading-[1.6]"
+            className="mt-3 md:mt-6 lg:mt-8 max-w-[620px] text-center font-normal text-white/70 text-[13px] md:text-[15px] lg:text-[16px] leading-[1.6] whitespace-pre-line"
           >
-            {narrativePart1}
-            {narrativePart2 && (
-              <>
-                <span className="md:hidden">
-                  <br />
-                </span>
-                <span className="hidden md:inline"> </span>
-                {narrativePart2}
-              </>
-            )}
+            {data.narratif}
           </motion.p>
 
           {/* Phrase pré-CTA (DM Sans Regular white/60, plus discret) */}
